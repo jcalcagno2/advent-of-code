@@ -1,0 +1,21 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS resource forks are stored in extended attributes
+._*
+
+# macOS Finder settings
+.Spotlight-V100
+.Trashes
+
+# macOS file tags
+.metadata_never_index
+.VolumeIcon.icns
+
+# macOS specific cache files
+.fseventsd
+._.Trashes
+._*
+

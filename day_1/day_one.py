@@ -3,7 +3,7 @@ import os
 def read_input():
     '''read input file'''
 
-    input_file = open("../inputs/input.txt","r")
+    input_file = open("../day_1/input.txt","r")
     return input_file
 
 def find_answer():

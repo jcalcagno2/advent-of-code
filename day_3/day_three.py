@@ -1,30 +1,38 @@
 import re
-import sys
 
+def read_input(file_path):
+    """Reads the input file and returns its content as a string."""
+    with open(file_path, "r") as input_file:
+        return input_file.read()
 
-def read_input():
-    '''read input file'''
+def process_memory(data):
+    """Processes the corrupted memory and calculates the results."""
+    part1 = 0  # Sum of all valid mul results
+    part2 = 0  # Sum of enabled mul results
+    enabled = True
 
-    input_file = open("../day_2/input2.txt","r")
-    return input_file
+    # Find all valid instructions using regex
+    instructions = re.findall(r"mul\(\d{1,3},\d{1,3}\)|do\(\)|don't\(\)", data)
 
-# pairs = re.findall(r'mul\((\d{1,3}),(\d{1,3})\)', data)
-# part1 = sum(prod(map(int, val)) for val in pairs)
-data = read_input()
-part1 = 0
-part2 = 0
-enabled = True
-for inst in re.findall(r"mul\(\d{1,3},\d{1,3}\)|do\(\)|don't\(\)", data):
-    
+    for inst in instructions:
         if inst == "do()":
             enabled = True
         elif inst == "don't()":
             enabled = False
-        else:
+        else:  # Valid mul(X,Y) instruction
             x, y = map(int, inst[4:-1].split(","))
-            part1 += x * y
+            result = x * y
+            part1 += result  # Always add to part1
             if enabled:
-                part2 += x * y
+                part2 += result  # Add to part2 only if enabled
 
-print(f"Part 1: {part1}")
-print(f"Part 2: {part2}")
+    return part1, part2
+
+if __name__ == "__main__":
+    # Replace with the actual path to your input file
+    file_path = "../day_3/input.txt"
+    data = read_input(file_path)
+    part1, part2 = process_memory(data)
+
+    print(f"Part 1: {part1}")
+    print(f"Part 2: {part2}")

@@ -1,48 +1,52 @@
+import sys
 from collections import defaultdict
 
-def read_input(file_path):
-    """Reads the input file and returns its content as a string."""
-    with open(file_path, "r") as f:
-        lines = list(map(str.strip, f.readlines()))
-        return lines
 
+with open(sys.argv[1], "r") as f:
+    lines = list(map(str.strip, f.readlines()))
 
-def search():
-    lines = read_input("../day_4/input.txt")
-    
-    
-    char_map = defaultdict(set)
-    for r, row in enumerate(lines):
-        for c, val in enumerate(row):
-            char_map[val].add((r, c))
+char_map = defaultdict(set)
+for r, row in enumerate(lines):
+    for c, val in enumerate(row):
+        char_map[val].add((r, c))
 
-    part1 = 0
-    for r, c in char_map["X"]:
-        for dr, dc in [
-            (-1, -1),
-            (-1, 0),
-            (-1, 1),
-            (0, -1),
-            (0, 1),
-            (1, -1),
-            (1, 0),
-            (1, 1),
-        ]:
-            for i, char in enumerate("MAS", 1):
-                if (r + (dr * i), c + (dc * i)) not in char_map[char]:
-                    break
-            else:
-                part1 += 1
-    print(f"Part 1: {part1}")
+part1 = 0
+for r, c in char_map["X"]:
+    for dr, dc in [
+        (-1, -1),
+        (-1, 0),
+        (-1, 1),
+        (0, -1),
+        (0, 1),
+        (1, -1),
+        (1, 0),
+        (1, 1),
+    ]:
+        for i, char in enumerate("MAS", 1):
+            if (r + (dr * i), c + (dc * i)) not in char_map[char]:
+                break
+        else:
+            part1 += 1
+print(f"Part 1: {part1}")
 
-    return part1
+upleft = lambda r, c: (r - 1, c - 1)
+upright = lambda r, c: (r - 1, c + 1)
+downleft = lambda r, c: (r + 1, c - 1)
+downright = lambda r, c: (r + 1, c + 1)
+get = lambda r, c: lines[r][c]
 
-print(search())
+part2 = 0
+for r, c in char_map["A"]:
+    # Cleaner Solution (Thanks HyperNeutrino)
+    if r == 0 or c == 0 or r == len(lines) - 1 or c == len(lines[0]) - 1:
+        continue
+    corners = (
+        get(*upleft(r, c))
+        + get(*upright(r, c))
+        + get(*downright(r, c))
+        + get(*downleft(r, c))
+    )
+    if corners in ["MMSS", "MSSM", "SSMM", "SMMS"]:
+        part2 += 1
 
-            
-print(search())
-    
-
-        
-
-
+print(f"Part 2: {part2}")
